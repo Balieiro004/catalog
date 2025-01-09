@@ -1,0 +1,21 @@
+package com.balieiro.Catalog.service;
+
+import com.balieiro.Catalog.entities.Category;
+import com.balieiro.Catalog.repositories.CategoryRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
+@Service
+public class CategoryService {
+
+    @Autowired
+    private CategoryRepository categoryRepository;
+
+    //@Transactional(readOnly = true)
+    public List<Category> findAll(){
+        return categoryRepository.findAll();
+    }
+}
