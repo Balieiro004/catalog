@@ -1,12 +1,11 @@
 package com.balieiro.Catalog.controllers;
 
 import com.balieiro.Catalog.entities.Category;
+import com.balieiro.Catalog.entities.DTO.CategoryDTO;
 import com.balieiro.Catalog.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,16 +18,21 @@ public class CategoryController {
 
      //Buscar todos
     @GetMapping
-    public ResponseEntity<List<Category>> findAll() {
-        List<Category> list = categoryService.findAll();
+    public ResponseEntity<List<CategoryDTO>> findAll() {
+        List<CategoryDTO> list = categoryService.findAll();
         return ResponseEntity.ok().body(list);
     }
 
+    //Buscar por id
+    @GetMapping(value = {"/{id}"})
+    public ResponseEntity<CategoryDTO> finById(@PathVariable Long id) {
+        CategoryDTO entity = categoryService.findById(id);
+        return ResponseEntity.ok().body(entity);
+    }
 
-     //Buscar por ai
-     //Adicionar nova categoria
+    //Adicionar nova categoria
 
-     //Atualizar nova categoria
+    //Atualizar nova categoria
 
-     //Deletar categoria
+    //Deletar categoria
 }
