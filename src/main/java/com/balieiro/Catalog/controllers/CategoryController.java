@@ -31,7 +31,11 @@ public class CategoryController {
     }
 
     //Adicionar nova categoria
-
+    @PutMapping
+    public ResponseEntity<CategoryDTO> save(@RequestBody CategoryDTO categoryDTO) {
+        CategoryDTO entity =  categoryService.save(categoryDTO);
+        return ResponseEntity.ok().body(entity);
+    }
     //Atualizar nova categoria
 
     //Deletar categoria

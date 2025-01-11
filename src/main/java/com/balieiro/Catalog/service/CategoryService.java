@@ -27,4 +27,11 @@ public class CategoryService {
         Category entity = category.orElseThrow(() -> new ControllerNotFoundException("Category not found"));
         return new CategoryDTO(entity);
     }
+
+    public CategoryDTO save(CategoryDTO categoryDTO) {
+        Category category = new Category();
+        category.setName(categoryDTO.getName());
+        return new CategoryDTO(categoryRepository.save(category));
+
+    }
 }
