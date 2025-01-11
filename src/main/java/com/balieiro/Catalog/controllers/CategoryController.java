@@ -6,7 +6,9 @@ import com.balieiro.Catalog.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -31,12 +33,14 @@ public class CategoryController {
     }
 
     //Adicionar nova categoria
-    @PutMapping
+    @PostMapping
     public ResponseEntity<CategoryDTO> save(@RequestBody CategoryDTO categoryDTO) {
         CategoryDTO entity =  categoryService.save(categoryDTO);
-        return ResponseEntity.ok().body(entity);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(entity.getId()).toUri();
+        return ResponseEntity.created(uri).body(entity);
     }
     //Atualizar nova categoria
+
 
     //Deletar categoria
 }
