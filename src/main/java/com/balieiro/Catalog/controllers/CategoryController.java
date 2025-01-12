@@ -40,6 +40,11 @@ public class CategoryController {
         return ResponseEntity.created(uri).body(entity);
     }
     //Atualizar nova categoria
+    @PutMapping("/{id}")
+    public ResponseEntity<CategoryDTO> updatre(@PathVariable Long id, @RequestBody CategoryDTO categoryDTO) {
+        CategoryDTO entity = categoryService.update(id, categoryDTO);
+        return ResponseEntity.ok().body(entity);
+    }
 
 
     //Deletar categoria

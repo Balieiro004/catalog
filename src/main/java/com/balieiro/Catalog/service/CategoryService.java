@@ -4,6 +4,7 @@ import com.balieiro.Catalog.entities.Category;
 import com.balieiro.Catalog.entities.DTO.CategoryDTO;
 import com.balieiro.Catalog.repositories.CategoryRepository;
 import com.balieiro.Catalog.service.exceptions.ControllerNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,5 +35,17 @@ public class CategoryService {
         category.setName(categoryDTO.getName());
         return new CategoryDTO(categoryRepository.save(category));
 
+    }
+
+    @Transactional
+    public CategoryDTO update(Long id, CategoryDTO categoryDTO) {
+        try{
+            Category entity = categoryRepository.getReferenceById(id);
+            entity.setName(categoryDTO.getName());
+            entity = categoryRepository.save(entity);
+            return new CategoryDTO(entity);
+        }catch (EntityNotFoundException e){
+            throw new ControllerNotFoundException("Category not found");
+        }
     }
 }
