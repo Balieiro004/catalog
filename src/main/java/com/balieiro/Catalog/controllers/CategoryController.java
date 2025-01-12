@@ -39,13 +39,17 @@ public class CategoryController {
         URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(entity.getId()).toUri();
         return ResponseEntity.created(uri).body(entity);
     }
-    //Atualizar nova categoria
+    //Atualizar categoria
     @PutMapping("/{id}")
-    public ResponseEntity<CategoryDTO> updatre(@PathVariable Long id, @RequestBody CategoryDTO categoryDTO) {
+    public ResponseEntity<CategoryDTO> update(@PathVariable Long id, @RequestBody CategoryDTO categoryDTO) {
         CategoryDTO entity = categoryService.update(id, categoryDTO);
         return ResponseEntity.ok().body(entity);
     }
 
-
     //Deletar categoria
+    @DeleteMapping(value = {"/{id}"})
+    public ResponseEntity<Void> deleteById(@PathVariable Long id) {
+        categoryService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
 }
