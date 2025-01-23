@@ -25,6 +25,9 @@ public class ProductService {
     @Autowired
     private ProductRepository productRepository;
 
+    @Autowired
+    private CategoryRepository categoryRepository;
+
     @Transactional(readOnly = true)
     public Page<ProductDTO> findAllPaged(PageRequest pageRequest) {
         Page<Product> products = productRepository.findAll(pageRequest);
@@ -41,7 +44,7 @@ public class ProductService {
     @Transactional
     public ProductDTO save(ProductDTO productDTO) {
         Product product = new Product();
-       // product.setName(productDTO.getName());
+        copyDtoToEntity(productDTO, product);
         return new ProductDTO(productRepository.save(product));
 
     }
@@ -49,10 +52,10 @@ public class ProductService {
     @Transactional
     public ProductDTO update(Long id, ProductDTO productDTO) {
         try{
-            Product entity = productRepository.getReferenceById(id);
-           // entity.setName(productDTO.getName());
-            entity = productRepository.save(entity);
-            return new ProductDTO(entity);
+            Product product = productRepository.getReferenceById(id);
+            copyDtoToEntity(productDTO, product);
+            product = productRepository.save(product);
+            return new ProductDTO(product);
         }catch (EntityNotFoundException e){
             throw new ControllerNotFoundException("Category not found");
         }
@@ -67,6 +70,20 @@ public class ProductService {
             productRepository.deleteById(id);
         }catch (DataIntegrityViolationException e){
             throw new DatabaseException("Integrity violation");
+        }
+    }
+
+    private void copyDtoToEntity(ProductDTO productDTO, Product product) {
+        product.setName(productDTO.getName());
+        product.setDescription(productDTO.getDescription());
+        product.setDate(productDTO.getDate());
+        product.setImgUrl(productDTO.getImgUrl());
+        product.setPrice(productDTO.getPrice());
+
+        product.getCategories().clear();
+        for (CategoryDTO categoryDTO : productDTO.getCategories()) {
+            Category category = categoryRepository.getReferenceById(categoryDTO.getId());
+            product.getCategories().add(category);
         }
     }
 }
